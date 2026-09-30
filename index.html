@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#122b49">
+<title>BookSwap_ | College Book Exchange</title>
+<style>
+:root{
+ --navy:#122b49;--blue:#1d4f7a;--blue2:#2e6e9e;--gold:#c89b3c;--bg:#f4f7fb;--surface:#fff;
+ --text:#172033;--muted:#6a7586;--line:#e1e7ee;--green:#21864e;--red:#c84f4f;--amber:#a36e08;
+ --shadow:0 14px 35px rgba(18,43,73,.10);--radius:16px
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.tiny{font-size:11px}
+.auth{min-height:100vh;display:grid;grid-template-columns:1.15fr .85fr;background:linear-gradient(135deg,#102742,#1d4f7a)}
+.auth-left{color:#fff;padding:70px 8%;display:flex;flex-direction:column;justify-content:center}.auth-brand{font-size:27px;font-weight:900;letter-spacing:.3px}.auth-left h1{font-size:55px;line-height:1.02;margin:28px 0 18px}.auth-left p{max-width:670px;font-size:18px;line-height:1.7;color:#d6e4ef}
+.auth-points{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:25px}.auth-point{padding:14px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.06)}
+.auth-right{display:grid;place-items:center;padding:30px}.auth-card{width:min(470px,100%);background:#fff;border-radius:22px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.auth-tabs{display:flex;gap:4px;background:#f2f5f8;padding:4px;border-radius:10px}.auth-tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:8px}.auth-tabs button.active{background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.08);font-weight:800;color:var(--navy)}
+.form{display:grid;gap:12px}.field{display:grid;gap:6px}.field label{font-size:12px;font-weight:800;color:#4b5869}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid #d1d9e3;border-radius:10px;background:#fff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#7ea6c6;box-shadow:0 0 0 3px rgba(126,166,198,.16)}
+.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:800;transition:.18s}.btn:hover{transform:translateY(-1px)}.primary{background:var(--gold);color:#fff}.navy{background:var(--navy);color:#fff}.soft{background:#eef4f8;color:var(--navy)}.outline{background:#fff;color:var(--navy);border:1px solid #ccd6e0}.danger{background:#fff0f0;color:var(--red)}
+.demo-note{background:#fff7df;border:1px solid #f0d792;color:#805d08;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.55}.err{background:#fff0f0;border:1px solid #f2c6c6;color:#ad3e3e;padding:10px;border-radius:9px;font-size:12px}
+
+#app{min-height:100vh}
+header{position:sticky;top:0;z-index:30;background:linear-gradient(110deg,#0e2743,#173f67);color:#fff;display:flex;align-items:center;gap:14px;padding:12px 4.5%;box-shadow:0 5px 18px rgba(9,27,47,.18)}
+.brand{font-weight:900;font-size:24px;white-space:nowrap}.brand i{font-style:normal;color:#f4d58d}.nav{display:flex;justify-content:center;gap:3px;flex:1;overflow:auto}.nav button{white-space:nowrap;background:transparent;color:#dfeaf4;border:0;border-radius:9px;padding:9px 12px}.nav button:hover,.nav button.active{background:rgba(255,255,255,.12);color:#fff}
+.head-right{display:flex;align-items:center;gap:8px}.icon{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff}.user-chip{display:flex;align-items:center;gap:8px;padding:4px 9px 4px 4px;border:1px solid rgba(255,255,255,.14);border-radius:24px}.avatar{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:#f1d082;color:var(--navy);font-weight:900}.user-name{font-size:12px;font-weight:800}
+.section{display:none}.section.active{display:block}.container{max-width:1280px;margin:auto;padding:34px 4.5%}
+.hero{background:radial-gradient(circle at 85% 10%,#e0eef8 0,transparent 29%),linear-gradient(135deg,#edf5fa,#fff);border-bottom:1px solid var(--line);padding:52px 4.5%}.hero-inner{max-width:1280px;margin:auto;display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:center}.eyebrow{display:inline-flex;gap:7px;align-items:center;background:#fff;border:1px solid #dbe4eb;padding:6px 10px;border-radius:20px;color:var(--navy);font-size:11px;font-weight:850}.hero h1{font-size:50px;line-height:1.03;color:var(--navy);margin:15px 0}.hero p{max-width:720px;font-size:18px;line-height:1.7;color:#4d5969}.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.flow-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:var(--shadow)}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:center}.flow-step{background:#f7fafc;border:1px solid var(--line);border-radius:12px;text-align:center;padding:11px 5px;font-size:11px;font-weight:800}.flow-step b{display:block;font-size:15px;color:var(--gold);margin-bottom:3px}
+.title{font-size:30px;color:var(--navy);margin:0}.sub{margin:6px 0 0}.topline{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}.card h3{margin:0 0 7px;color:var(--navy)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:20px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}.stat .n{font-size:28px;font-weight:900;color:var(--navy)}.stat .l{font-size:11px;color:var(--muted);margin-top:4px}
+.toolbar{display:grid;grid-template-columns:1.5fr .8fr .7fr .7fr .7fr auto;gap:9px;margin:19px 0}.toolbar input,.toolbar select{padding:12px 13px;border:1px solid #d3dce5;border-radius:10px;background:#fff}
+.book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px}.book{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow);position:relative}.cover{height:170px;border-radius:13px;background:linear-gradient(135deg,#143a60,#5c94bd);display:grid;place-items:center;color:#fff;font-weight:900;font-size:23px;text-align:center;padding:22px}.book h3{margin:14px 0 6px}.bookmeta{font-size:12px;color:var(--muted);line-height:1.55}.tags{margin:4px 0}.tag{display:inline-block;padding:5px 8px;border-radius:20px;background:#edf4fa;color:var(--navy);font-size:10px;font-weight:850;margin:4px 4px 0 0}.tag.green{background:#eaf7ef;color:var(--green)}.tag.gold{background:#fff6dd;color:var(--amber)}
+.fav{position:absolute;right:24px;top:24px;border:0;border-radius:50%;width:34px;height:34px;background:rgba(255,255,255,.94);font-size:18px;color:#697587}.fav.on{color:#bd5252}.book-actions{display:flex;gap:8px;margin-top:12px}
+.detail{display:grid;grid-template-columns:340px 1fr;gap:25px}.detail-cover{height:450px;border-radius:18px;background:linear-gradient(145deg,#173f67,#70a5c9);color:#fff;display:grid;place-items:center;text-align:center;padding:30px;font-size:36px;font-weight:900}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:17px 0}.detail-item{padding:12px;border:1px solid var(--line);border-radius:11px}.detail-item b{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.request{display:grid;grid-template-columns:1.2fr .7fr .7fr auto;gap:14px;align-items:center;padding:15px;border:1px solid var(--line);border-radius:12px;background:#fff;margin:10px 0}.status{display:inline-flex;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:850}.pending{background:#fff6dc;color:var(--amber)}.accepted{background:#eaf7ef;color:var(--green)}.declined{background:#fff0f0;color:var(--red)}.completed{background:#edf4fa;color:var(--navy)}
+.list-grid{display:grid;grid-template-columns:1fr .5fr;gap:18px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.msg-layout{display:grid;grid-template-columns:285px 1fr;min-height:500px}.threads{border-right:1px solid var(--line);padding-right:10px}.thread{padding:12px;border-radius:10px;margin-bottom:5px}.thread:hover,.thread.selected{background:#eef4f9}.chat{padding-left:18px;display:flex;flex-direction:column}.bubble{max-width:75%;padding:11px 13px;border-radius:13px;line-height:1.45;margin:5px 0;font-size:13px}.bubble.me{background:var(--navy);color:#fff;margin-left:auto}.bubble.them{background:#eef3f7}.chat-input{display:flex;gap:8px;margin-top:auto;padding-top:14px}.chat-input input{flex:1;padding:12px;border:1px solid #d3dce5;border-radius:10px}
+.activity{display:grid;gap:8px}.activity-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.dot{width:9px;height:9px;border-radius:50%;background:var(--gold);margin-top:5px;flex:none}
+.profile{display:grid;grid-template-columns:190px 1fr;gap:25px}.profile-avatar{width:150px;height:150px;border-radius:22px;background:linear-gradient(140deg,#173f67,#69a0c7);display:grid;place-items:center;color:#fff;font-size:48px;font-weight:900}
+.empty{text-align:center;padding:38px;border:1px dashed #cbd6e0;border-radius:13px;color:var(--muted);background:#fbfcfe}
+.modal-back{position:fixed;inset:0;background:rgba(7,19,33,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:80}.modal-back.open{display:flex}.modal{background:#fff;border-radius:18px;width:min(720px,100%);max-height:92vh;overflow:auto;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.3)}.modal-head{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#edf2f6;border-radius:50%;width:34px;height:34px}
+.toast{position:fixed;right:18px;bottom:18px;background:#173f67;color:#fff;padding:12px 15px;border-radius:11px;z-index:100;box-shadow:var(--shadow);opacity:0;transform:translateY(15px);transition:.23s}.toast.show{opacity:1;transform:none}
+footer{background:#0e2743;color:#d5e1eb;text-align:center;padding:30px;margin-top:35px}footer b{color:#fff}
+@media(max-width:1050px){.hero-inner,.list-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.toolbar{grid-template-columns:1fr 1fr 1fr}.request{grid-template-columns:1fr 1fr}.detail{grid-template-columns:1fr}.detail-cover{height:300px}}
+@media(max-width:760px){.auth{grid-template-columns:1fr}.auth-left{display:none}.auth-right{min-height:100vh}.nav{justify-content:flex-start}.user-name{display:none}.stats{grid-template-columns:1fr 1fr}.two,.detail-grid{grid-template-columns:1fr}.msg-layout{grid-template-columns:1fr}.threads{border-right:0;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:10px}.hero h1{font-size:39px}.flow{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="authScreen" class="auth">
+  <div class="auth-left">
+    <div class="auth-brand">📚 BookSwap_</div>
+    <h1>Campus books,<br>shared smarter.</h1>
+    <p>A full interactive college marketplace prototype with authentication, private student dashboards, book listings, requests, favourites and messaging.</p>
+    <div class="auth-points">
+      <div class="auth-point">🔐 Account-based access</div>
+      <div class="auth-point">📚 Marketplace listings</div>
+      <div class="auth-point">🤝 Exchange workflow</div>
+      <div class="auth-point">💬 Student messaging</div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-card">
+      <h2 style="margin:0;color:var(--navy)">Welcome to BookSwap_</h2>
+      <p class="muted" style="margin-top:6px">Sign in to your student workspace</p>
+      <div class="auth-tabs" style="margin:18px 0">
+        <button id="tabLogin" class="active" onclick="authMode('login')">Login</button>
+        <button id="tabRegister" onclick="authMode('register')">Create Account</button>
+      </div>
+      <div id="authError" class="err hidden"></div>
+      <form id="loginForm" class="form" onsubmit="login(event)">
+        <div class="field"><label>Email</label><input id="loginEmail" type="email" required placeholder="you@college.edu"></div>
+        <div class="field"><label>Password</label><input id="loginPass" type="password" required placeholder="Enter password"></div>
+        <button class="btn navy" type="submit">Login to BookSwap →</button>
+        <div class="demo-note"><b>Demo accounts</b><br>Sahil Meena: <b>sahil@bookswap.demo</b> / <b>1234</b><br>Other student: <b>student@bookswap.demo</b> / <b>1234</b></div>
+      </form>
+      <form id="registerForm" class="form hidden" onsubmit="register(event)">
+        <div class="two">
+          <div class="field"><label>Full name</label><input id="regName" required placeholder="Student name"></div>
+          <div class="field"><label>College / branch</label><input id="regDept" required placeholder="ECE • MNIT Jaipur"></div>
+        </div>
+        <div class="field"><label>College email</label><input id="regEmail" type="email" required placeholder="student@college.edu"></div>
+        <div class="two">
+          <div class="field"><label>Password</label><input id="regPass" type="password" minlength="4" required placeholder="Minimum 4 characters"></div>
+          <div class="field"><label>Confirm password</label><input id="regPass2" type="password" required placeholder="Repeat password"></div>
+        </div>
+        <button class="btn navy" type="submit">Create Student Account →</button>
+        <div class="demo-note">Demo mode: account credentials are stored locally in this browser. This prototype does not provide production-grade authentication.</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<header>
+  <div class="brand">📚 BookSwap<i>_</i></div>
+  <div id="nav" class="nav">
+    <button data-target="home" onclick="show('home')" class="active">Home</button>
+    <button data-target="dashboard" onclick="show('dashboard')">Dashboard</button>
+    <button data-target="books" onclick="show('books')">Explore</button>
+    <button data-target="list" onclick="show('list')">List a Book</button>
+    <button data-target="requests" onclick="show('requests')">Requests</button>
+    <button data-target="messages" onclick="show('messages')">Messages</button>
+    <button data-target="profile" onclick="show('profile')">Profile</button>
+  </div>
+  <div class="head-right">
+    <button class="icon" onclick="openNotifications()" title="Notifications">🔔</button>
+    <div class="user-chip"><div id="avatar" class="avatar">SM</div><div id="userName" class="user-name">Sahil</div></div>
+    <button class="icon" onclick="logout()" title="Logout">↪</button>
+  </div>
+</header>
+
+<section id="home" class="section active">
+  <div class="hero"><div class="hero-inner">
+    <div>
+      <div class="eyebrow">● Interactive student marketplace • Demo mode</div>
+      <h1>Exchange Books.<br>Save Money.<br>Reuse Smarter.</h1>
+      <p>BookSwap_ connects students who have academic books with students who need them. Discover listings, compare condition and price, request a book and coordinate the exchange.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="show('books')">Explore Books →</button><button class="btn outline" onclick="show('list')">List Your Book</button></div>
+    </div>
+    <div class="flow-card">
+      <h3 style="margin-top:0;color:var(--navy)">End-to-end student flow</h3>
+      <div class="flow">
+        <div class="flow-step"><b>01</b>Discover</div><div class="flow-step"><b>02</b>Details</div><div class="flow-step"><b>03</b>Request</div><div class="flow-step"><b>04</b>Chat</div><div class="flow-step"><b>05</b>Complete</div>
+      </div>
+      <div class="demo-note" style="margin-top:13px">Each account has its own private dashboard, favourites, requests and conversations. Marketplace listings remain shared because they represent public listings.</div>
+    </div>
+  </div></div>
+  <div class="container">
+    <div class="topline"><div><h2 class="title">Platform Modules</h2><p class="sub muted">Designed as a small but complete college marketplace.</p></div></div>
+    <div class="cards">
+      <div class="card"><h3>🔎 Smart Discovery</h3><p class="muted">Search by title, author or subject and filter by semester, mode and condition.</p></div>
+      <div class="card"><h3>🔐 Private Student Space</h3><p class="muted">Login-based profile, saved books, personal listings and activity history.</p></div>
+      <div class="card"><h3>🤝 Transaction Workflow</h3><p class="muted">Requests progress from Pending to Accepted or Declined, then Completed.</p></div>
+      <div class="card"><h3>💬 Communication</h3><p class="muted">Conversation UI helps students coordinate pickup and exchange details.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="dashboard" class="section">
+<div class="container">
+  <div class="topline"><div><h2 class="title">Student Dashboard</h2><p class="sub muted">Private overview for the currently logged-in student.</p></div><span id="dashBadge" class="eyebrow"></span></div>
+  <div class="stats">
+    <div class="stat"><div class="n" id="sListed">0</div><div class="l">My Listings</div></div>
+    <div class="stat"><div class="n" id="sSaved">0</div><div class="l">Saved Books</div></div>
+    <div class="stat"><div class="n" id="sOut">0</div><div class="l">Sent Requests</div></div>
+    <div class="stat"><div class="n" id="sIn">0</div><div class="l">Incoming Requests</div></div>
+    <div class="stat"><div class="n" id="sDone">0</div><div class="l">Completed</div></div>
+  </div>
+  <div class="list-grid">
+    <div class="panel"><h3>Recent Activity</h3><div id="dashActivity" class="activity"></div></div>
+    <div class="panel"><h3>Quick Actions</h3><div style="display:grid;gap:10px"><button class="btn soft" onclick="show('books')">🔎 Find a Book</button><button class="btn soft" onclick="show('list')">📚 Create Listing</button><button class="btn soft" onclick="show('requests')">🤝 Manage Requests</button><button class="btn soft" onclick="show('messages')">💬 Open Messages</button></div></div>
+  </div>
+</div>
+</section>
+
+<section id="books" class="section">
+<div class="container">
+ <div class="topline"><div><h2 class="title">Explore Books</h2><p class="sub muted">Shared marketplace catalogue.</p></div><button class="btn primary" onclick="show('list')">+ List a Book</button></div>
+ <div class="toolbar">
+   <input id="search" placeholder="Search title, author, subject..." oninput="renderBooks()">
+   <select id="subject" onchange="renderBooks()"><option value="">All Subjects</option><option>Digital Electronics</option><option>Network Theory</option><option>Signals & Systems</option><option>Engineering Mathematics</option><option>Microelectronics</option><option>Communication Systems</option></select>
+   <select id="sem" onchange="renderBooks()"><option value="">Semester</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option></select>
+   <select id="mode" onchange="renderBooks()"><option value="">Mode</option><option>Exchange</option><option>Sale</option><option>Free</option></select>
+   <select id="condition" onchange="renderBooks()"><option value="">Condition</option><option>Like New</option><option>Very Good</option><option>Good</option><option>Used</option></select>
+   <button class="btn outline" onclick="resetFilters()">Reset</button>
+ </div>
+ <div id="bookGrid" class="book-grid"></div>
+</div>
+</section>
+
+<section id="detail" class="section"><div class="container"><div id="detailBox"></div></div></section>
+
+<section id="list" class="section">
+<div class="container">
+ <div class="topline"><div><h2 class="title">List a Book</h2><p class="sub muted">Publish a marketplace listing under your account.</p></div><span class="eyebrow">🔐 Owner: <span id="ownerBadge"></span></span></div>
+ <div class="list-grid" style="margin-top:18px">
+  <div class="panel">
+   <div class="two">
+    <div class="field"><label>Book title *</label><input id="newTitle" placeholder="e.g. Digital Signal Processing"></div>
+    <div class="field"><label>Author *</label><input id="newAuthor" placeholder="Author name"></div>
+    <div class="field"><label>Subject</label><select id="newSubject"><option>Digital Electronics</option><option>Network Theory</option><option>Signals & Systems</option><option>Engineering Mathematics</option><option>Microelectronics</option><option>Communication Systems</option></select></div>
+    <div class="field"><label>Semester</label><select id="newSem"><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option></select></div>
+    <div class="field"><label>Transaction mode</label><select id="newMode"><option>Exchange</option><option>Sale</option><option>Free</option></select></div>
+    <div class="field"><label>Expected price ₹</label><input id="newPrice" type="number" min="0" placeholder="Optional"></div>
+    <div class="field"><label>Condition</label><select id="newCondition"><option>Like New</option><option>Very Good</option><option>Good</option><option>Used</option></select></div>
+    <div class="field"><label>Edition</label><input id="newEdition" placeholder="e.g. 3rd Edition"></div>
+   </div>
+   <div class="field" style="margin-top:12px"><label>Description</label><textarea id="newDesc" rows="5" placeholder="Mention markings, included notes, preferred exchange point, etc."></textarea></div>
+   <div style="display:flex;gap:8px;margin-top:13px;flex-wrap:wrap"><button class="btn primary" onclick="addListing()">Publish Listing</button><button class="btn outline" onclick="clearListingForm()">Clear</button></div>
+   <div class="demo-note" style="margin-top:14px">In this frontend prototype, listing data is stored locally in the browser. A production version would send the form to backend APIs and a database.</div>
+  </div>
+  <div class="panel"><h3>Your ownership model</h3><p class="muted">This listing will be tagged to the current logged-in user. Other demo accounts can see the public listing, while only the owner can edit or delete it.</p><div class="card" style="box-shadow:none;margin-top:13px;background:#f9fbfd"><b id="listOwnerName">Sahil Meena</b><div class="small muted" id="listOwnerDept">ECE • MNIT Jaipur</div><div style="margin-top:10px" class="tag green">✓ Student account</div></div></div>
+ </div>
+ </div>
+</section>
+
+<section id="requests" class="section">
+<div class="container">
+ <div class="topline"><div><h2 class="title">Requests Center</h2><p class="sub muted">Outgoing and incoming exchange activity for your account.</p></div></div>
+ <div class="panel" style="margin-top:18px">
+  <h3>Sent by me</h3><div id="outRequests"></div>
+  <h3 style="margin-top:28px">Received by me</h3><div id="inRequests"></div>
+ </div>
+</div>
+</section>
+
+<section id="messages" class="section">
+<div class="container">
+ <div class="topline"><div><h2 class="title">Messages</h2><p class="sub muted">Private demo conversations for your account.</p></div></div>
+ <div class="panel msg-layout" style="margin-top:18px">
+   <div id="threads" class="threads"></div>
+   <div class="chat"><div id="chatHeader"></div><div id="bubbles"></div><div class="chat-input"><input id="chatText" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()"><button class="btn primary" onclick="sendMessage()">Send</button></div></div>
+ </div>
+</div>
+</section>
+
+<section id="profile" class="section">
+<div class="container">
+ <div class="topline"><div><h2 class="title">My Profile</h2><p class="sub muted">Private account profile.</p></div><button class="btn outline" onclick="openSwitchAccount()">Switch Demo Account</button></div>
+ <div class="panel profile" style="margin-top:18px">
+  <div><div id="profileAvatar" class="profile-avatar">SM</div><div class="tag green" style="margin-top:10px">✓ Demo verified student</div></div>
+  <div><h2 id="profileName" style="margin:0;color:var(--navy)"></h2><p id="profileDept" class="muted"></p>
+   <div class="detail-grid">
+    <div class="detail-item"><b>Email</b><span id="profileEmail"></span></div>
+    <div class="detail-item"><b>Member since</b>2026</div>
+    <div class="detail-item"><b>My listings</b><span id="profileListings"></span></div>
+    <div class="detail-item"><b>Completed exchanges</b><span id="profileCompleted"></span></div>
+   </div>
+   <div class="demo-note">Account separation in this prototype is implemented with per-user browser storage. It is suitable for demonstrating application logic, but not for real authentication or multi-device production use.</div>
+  </div>
+ </div>
+</div>
+</section>
+
+<footer><b>BookSwap_</b> • College Book Exchange & Marketplace • SAHIL MEENA • 2023UEC1098 • ECE, MNIT Jaipur<br><span class="small">Interactive frontend prototype • data stored locally for demonstration</span></footer>
+
+<div id="modalBack" class="modal-back" onclick="closeModal(event)"><div id="modal" class="modal" onclick="event.stopPropagation()"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const CATALOG_KEY='bs_public_catalog_v3';
+const USER_KEY='bs_users_v3';
+const CURRENT_KEY='bs_current_v3';
+const MSG_KEY='bs_messages_v3';
+const REQ_KEY='bs_requests_v3';
+
+const seedCatalog=[
+{id:'b1',title:'Digital Electronics',author:'R.P. Jain',subject:'Digital Electronics',sem:'5th',condition:'Good',mode:'Exchange',price:0,edition:'4th Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.7,desc:'Annotated copy with chapter-wise notes. Excellent for semester revision.',verified:true},
+{id:'b2',title:'Network Theory',author:'A. Chakrabarti',subject:'Network Theory',sem:'4th',condition:'Very Good',mode:'Sale',price:350,edition:'2nd Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.8,desc:'Clean pages with light highlighting in two chapters.',verified:true},
+{id:'b3',title:'Signals and Systems',author:'A.V. Oppenheim',subject:'Signals & Systems',sem:'5th',condition:'Good',mode:'Exchange',price:0,edition:'2nd Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.6,desc:'Useful reference for Fourier analysis and systems.',verified:true},
+{id:'b4',title:'Engineering Mathematics',author:'B.S. Grewal',subject:'Engineering Mathematics',sem:'3rd',condition:'Like New',mode:'Free',price:0,edition:'44th Edition',ownerEmail:'sahil@bookswap.demo',owner:'Sahil Meena',dept:'ECE • MNIT Jaipur',rating:4.9,desc:'Almost unused. Free to a student who needs it.',verified:true},
+{id:'b5',title:'Microelectronic Circuits',author:'Sedra & Smith',subject:'Microelectronics',sem:'6th',condition:'Good',mode:'Sale',price:650,edition:'8th Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.5,desc:'Hardcover copy with handwritten study notes.',verified:true},
+{id:'b6',title:'Network Analysis',author:'Van Valkenburg',subject:'Network Theory',sem:'4th',condition:'Good',mode:'Exchange',price:0,edition:'3rd Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.7,desc:'Older edition, strong for fundamentals and practice.',verified:false},
+{id:'b7',title:'Communication Systems',author:'Simon Haykin',subject:'Communication Systems',sem:'6th',condition:'Very Good',mode:'Sale',price:480,edition:'5th Edition',ownerEmail:'sahil@bookswap.demo',owner:'Sahil Meena',dept:'ECE • MNIT Jaipur',rating:4.6,desc:'Minimal markings; useful for modulation and noise topics.',verified:true},
+{id:'b8',title:'Digital Design',author:'M. Morris Mano',subject:'Digital Electronics',sem:'3rd',condition:'Good',mode:'Exchange',price:0,edition:'6th Edition',ownerEmail:'student@bookswap.demo',owner:'Aarav Sharma',dept:'ECE • MNIT Jaipur',rating:4.8,desc:'Includes a few solved university questions.',verified:true}
+];
+
+function getJSON(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v??JSON.parse(JSON.stringify(f))}catch(e){return JSON.parse(JSON.stringify(f))}}
+function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
+if(!localStorage.getItem(CATALOG_KEY))setJSON(CATALOG_KEY,seedCatalog);
+if(!localStorage.getItem(USER_KEY))setJSON(USER_KEY,[]);
+if(!localStorage.getItem(REQ_KEY))setJSON(REQ_KEY,[]);
+if(!localStorage.getItem(MSG_KEY))setJSON(MSG_KEY,[]);
+
+function initials(name){return (name||'User').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase()}
+function currentEmail(){return sessionStorage.getItem(CURRENT_KEY)}
+function currentUser(){const email=currentEmail();return getJSON(USER_KEY,[]).find(u=>u.email===email)||null}
+async function hashPass(s){if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}return btoa(unescape(encodeURIComponent(s)))}
+async function seedUsers(){
+let users=getJSON(USER_KEY,[]);
+if(users.length)return;
+users=[{name:'Sahil Meena',dept:'ECE • MNIT Jaipur',email:'sahil@bookswap.demo',pass:await hashPass('1234'),joined:'2026'},
+{name:'Aarav Sharma',dept:'ECE • MNIT Jaipur',email:'student@bookswap.demo',pass:await hashPass('1234'),joined:'2026'}];
+setJSON(USER_KEY,users);
+}
+function authMode(mode){document.getElementById('loginForm').classList.toggle('hidden',mode!=='login');document.getElementById('registerForm').classList.toggle('hidden',mode!=='register');document.getElementById('tabLogin').classList.toggle('active',mode==='login');document.getElementById('tabRegister').classList.toggle('active',mode==='register');clearAuthError()}
+function authError(msg){const e=document.getElementById('authError');e.textContent=msg;e.classList.remove('hidden')}function clearAuthError(){document.getElementById('authError').classList.add('hidden')}
+async function login(ev){ev.preventDefault();clearAuthError();const email=document.getElementById('loginEmail').value.trim().toLowerCase(),pass=await hashPass(document.getElementById('loginPass').value);const u=getJSON(USER_KEY,[]).find(x=>x.email===email&&x.pass===pass);if(!u){authError('Invalid email or password. Try one of the demo accounts shown below.');return}sessionStorage.setItem(CURRENT_KEY,email);startApp()}
+async function register(ev){ev.preventDefault();clearAuthError();const name=document.getElementById('regName').value.trim(),dept=document.getElementById('regDept').value.trim(),email=document.getElementById('regEmail').value.trim().toLowerCase(),p1=document.getElementById('regPass').value,p2=document.getElementById('regPass2').value;if(p1!==p2){authError('Passwords do not match.');return}let users=getJSON(USER_KEY,[]);if(users.some(u=>u.email===email)){authError('An account with this email already exists.');return}users.push({name,dept,email,pass:await hashPass(p1),joined:'2026'});setJSON(USER_KEY,users);sessionStorage.setItem(CURRENT_KEY,email);startApp();toast('Student account created successfully')}
+function logout(){sessionStorage.removeItem(CURRENT_KEY);location.reload()}
+function startApp(){document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');refreshShell();show('home')}
+function refreshShell(){const u=currentUser();if(!u)return;document.getElementById('avatar').textContent=initials(u.name);document.getElementById('userName').textContent=u.name.split(' ')[0];document.getElementById('ownerBadge').textContent=u.name;document.getElementById('listOwnerName').textContent=u.name;document.getElementById('listOwnerDept').textContent=u.dept;document.getElementById('profileAvatar').textContent=initials(u.name);document.getElementById('profileName').textContent=u.name;document.getElementById('profileDept').textContent=u.dept;document.getElementById('profileEmail').textContent=u.email}
+function show(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));if(id==='books')renderBooks();if(id==='dashboard')renderDashboard();if(id==='requests')renderRequests();if(id==='messages')renderThreads();if(id==='profile')renderProfile();scrollTo({top:0,behavior:'smooth'})}
+function catalog(){return getJSON(CATALOG_KEY,seedCatalog)}function saveCatalog(v){setJSON(CATALOG_KEY,v)}
+function resetFilters(){['search','subject','sem','mode','condition'].forEach(id=>document.getElementById(id).value='');renderBooks()}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function renderBooks(){const q=(document.getElementById('search').value||'').toLowerCase().trim(),s=document.getElementById('subject').value,sem=document.getElementById('sem').value,mode=document.getElementById('mode').value,cond=document.getElementById('condition').value;const favs=getUserData().favorites||[];const arr=catalog().filter(b=>(!q||(b.title+' '+b.author+' '+b.subject).toLowerCase().includes(q))&&(!s||b.subject===s)&&(!sem||b.sem===sem)&&(!mode||b.mode===mode)&&(!cond||b.condition===cond));document.getElementById('bookGrid').innerHTML=arr.length?arr.map(b=>{const fav=favs.includes(b.id),mine=b.ownerEmail===currentEmail();return '<div class="book"><button class="fav '+(fav?'on':'')+'" onclick="toggleFav(\''+b.id+'\')">'+(fav?'♥':'♡')+'</button><div class="cover">'+escapeHtml(b.title)+'</div><h3>'+escapeHtml(b.title)+'</h3><div class="bookmeta">'+escapeHtml(b.author)+' • '+b.sem+' semester</div><div class="tags"><span class="tag">'+escapeHtml(b.subject)+'</span><span class="tag">'+escapeHtml(b.condition)+'</span><span class="tag">'+escapeHtml(b.mode)+'</span></div><p class="bookmeta">'+escapeHtml(b.desc)+'</p><div style="display:flex;justify-content:space-between;align-items:center"><b style="color:var(--navy)">'+(b.mode==='Free'?'Free':b.mode==='Exchange'?'Exchange':'₹'+b.price)+'</b><span class="small">★ '+b.rating+'</span></div><div class="bookmeta" style="margin-top:7px">Listed by <b>'+escapeHtml(b.owner)+'</b> '+(b.verified?'· ✓ verified':'')+'</div><div class="book-actions"><button class="btn primary" onclick="details(\''+b.id+'\')">View Details</button>'+(mine?'<button class="btn danger" onclick="deleteListing(\''+b.id+'\')">Delete</button>':'<button class="btn outline" onclick="requestBook(\''+b.id+'\')">Request</button>')+'</div></div>'}).join(''):'<div class="empty" style="grid-column:1/-1">No books found. Try changing the filters.</div>'}
+function details(id){const b=catalog().find(x=>x.id===id);if(!b)return;const fav=(getUserData().favorites||[]).includes(id);document.getElementById('detailBox').innerHTML='<div class="detail"><div><div class="detail-cover">'+escapeHtml(b.title)+'</div><button class="btn outline" style="margin-top:12px" onclick="show(\'books\')">← Back to Explore</button></div><div class="panel"><div class="eyebrow">'+(b.verified?'✓ Verified student listing':'Community listing')+'</div><h2 style="font-size:34px;color:var(--navy);margin:14px 0 5px">'+escapeHtml(b.title)+'</h2><p class="muted" style="font-size:16px">'+escapeHtml(b.author)+' • Listed by '+escapeHtml(b.owner)+'</p><div class="detail-grid"><div class="detail-item"><b>Subject</b>'+escapeHtml(b.subject)+'</div><div class="detail-item"><b>Semester</b>'+b.sem+'</div><div class="detail-item"><b>Condition</b>'+escapeHtml(b.condition)+'</div><div class="detail-item"><b>Edition</b>'+escapeHtml(b.edition||'Standard')+'</div><div class="detail-item"><b>Transaction</b>'+escapeHtml(b.mode)+'</div><div class="detail-item"><b>Expected value</b>'+(b.mode==='Free'?'Free':b.mode==='Exchange'?'Exchange':'₹'+b.price)+'</div><div class="detail-item"><b>Seller rating</b>★ '+b.rating+'</div><div class="detail-item"><b>Owner</b>'+escapeHtml(b.owner)+'</div></div><h3>About this listing</h3><p style="line-height:1.7">'+escapeHtml(b.desc)+'</p><div class="demo-note">Prototype note: this page does not process online payments. Real deployment would validate users and transactions on the server.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">'+(b.ownerEmail!==currentEmail()?'<button class="btn primary" onclick="requestBook(\''+b.id+'\')">Send Request</button><button class="btn soft" onclick="startChat(\''+b.ownerEmail+'\',\''+b.id+'\')">Message Seller</button>':'<button class="btn soft" onclick="show(\'list\')">Manage My Listing</button>')+'<button class="btn outline" onclick="toggleFav(\''+b.id+'\')">'+(fav?'♥ Saved':'♡ Save Book')+'</button></div></div></div>';show('detail')}
+function getUserKey(){return 'bs_user_'+currentEmail()}function getUserData(){return getJSON(getUserKey(),{favorites:[],activity:[],preferences:{}})}function saveUserData(d){setJSON(getUserKey(),d)}
+function addActivity(text){const d=getUserData();d.activity=d.activity||[];d.activity.unshift([new Date().toLocaleString('en-IN'),text]);d.activity=d.activity.slice(0,30);saveUserData(d)}
+function toggleFav(id){const d=getUserData();d.favorites=d.favorites||[];const i=d.favorites.indexOf(id);if(i>=0){d.favorites.splice(i,1);toast('Removed from saved books')}else{d.favorites.unshift(id);toast('Saved to your favourites')}saveUserData(d);addActivity((i>=0?'Removed':'Saved')+' a book');renderBooks();renderDashboard();renderProfile()}
+function addListing(){const u=currentUser(),t=document.getElementById('newTitle').value.trim(),a=document.getElementById('newAuthor').value.trim();if(!t||!a){toast('Title and author are required');return}const mode=document.getElementById('newMode').value,book={id:'b'+Date.now(),title:t,author:a,subject:document.getElementById('newSubject').value,sem:document.getElementById('newSem').value,condition:document.getElementById('newCondition').value,mode,price:Number(document.getElementById('newPrice').value||0),edition:document.getElementById('newEdition').value.trim()||'Standard Edition',ownerEmail:u.email,owner:u.name,dept:u.dept,rating:5,desc:document.getElementById('newDesc').value.trim()||'Student-listed academic book.',verified:true};const books=catalog();books.unshift(book);saveCatalog(books);addActivity('Published listing: '+t);clearListingForm();toast('Listing published successfully');show('books')}
+function clearListingForm(){['newTitle','newAuthor','newPrice','newEdition','newDesc'].forEach(id=>document.getElementById(id).value='')}
+function deleteListing(id){const b=catalog().find(x=>x.id===id);if(!b||b.ownerEmail!==currentEmail())return;if(!confirm('Delete this listing?'))return;saveCatalog(catalog().filter(x=>x.id!==id));addActivity('Deleted listing: '+b.title);toast('Listing deleted');renderBooks();renderDashboard()}
+function getRequests(){return getJSON(REQ_KEY,[])}function saveRequests(v){setJSON(REQ_KEY,v)}
+function requestBook(bookId){const b=catalog().find(x=>x.id===bookId),from=currentEmail();if(!b||b.ownerEmail===from){toast('You cannot request your own listing');return}const reqs=getRequests();if(reqs.some(r=>r.bookId===bookId&&r.from===from&&r.status==='Pending')){toast('You already have a pending request for this book');return}reqs.unshift({id:'r'+Date.now(),bookId,book:b.title,from,to:b.ownerEmail,fromName:currentUser().name,toName:b.owner,status:'Pending',date:new Date().toLocaleDateString('en-IN')});saveRequests(reqs);addActivity('Sent request for: '+b.title);toast('Request sent to '+b.owner);show('requests')}
+function statusClass(s){return s.toLowerCase()}
+function requestActions(r,incoming){if(incoming&&r.status==='Pending')return '<button class="btn soft" onclick="changeRequest(\''+r.id+'\',\'Accepted\')">Accept</button><button class="btn danger" onclick="changeRequest(\''+r.id+'\',\'Declined\')">Decline</button>';if(!incoming&&r.status==='Accepted')return '<button class="btn primary" onclick="changeRequest(\''+r.id+'\',\'Completed\')">Mark Complete</button>';if(!incoming&&r.status==='Pending')return '<button class="btn outline" onclick="cancelRequest(\''+r.id+'\')">Cancel</button>';return ''}
+function renderRequests(){const me=currentEmail(),reqs=getRequests(),out=reqs.filter(r=>r.from===me),inc=reqs.filter(r=>r.to===me);const render=(arr,incoming)=>arr.length?arr.map(r=>'<div class="request"><div><b>'+escapeHtml(r.book)+'</b><div class="small muted">'+(incoming?'From: '+escapeHtml(r.fromName):'To: '+escapeHtml(r.toName))+' • '+r.date+'</div></div><span class="status '+statusClass(r.status)+'">'+r.status+'</span><div class="small muted">'+(r.status==='Accepted'?'You can now chat and arrange the exchange.':r.status==='Completed'?'Exchange marked complete.':r.status==='Declined'?'Request was declined.':'Awaiting response.')+'</div><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">'+requestActions(r,incoming)+(r.status!=='Declined'?'<button class="btn outline" onclick="openRequestChat(\''+r.id+'\')">Chat</button>':'')+'</div></div>').join(''):'<div class="empty">No requests in this section.</div>';document.getElementById('outRequests').innerHTML=render(out,false);document.getElementById('inRequests').innerHTML=render(inc,true)}
+function changeRequest(id,status){const reqs=getRequests(),r=reqs.find(x=>x.id===id);if(!r)return;r.status=status;saveRequests(reqs);addActivity(status+' request: '+r.book);toast('Request updated to '+status);renderRequests();renderDashboard()}
+function cancelRequest(id){const reqs=getRequests(),r=reqs.find(x=>x.id===id);saveRequests(reqs.filter(x=>x.id!==id));addActivity('Cancelled request: '+(r?r.book:'book'));toast('Request cancelled');renderRequests();renderDashboard()}
+function renderDashboard(){const me=currentEmail(),books=catalog(),d=getUserData(),reqs=getRequests();const listed=books.filter(b=>b.ownerEmail===me).length,inc=reqs.filter(r=>r.to===me),out=reqs.filter(r=>r.from===me),done=out.filter(r=>r.status==='Completed').length;document.getElementById('sListed').textContent=listed;document.getElementById('sSaved').textContent=(d.favorites||[]).length;document.getElementById('sOut').textContent=out.length;document.getElementById('sIn').textContent=inc.length;document.getElementById('sDone').textContent=done;document.getElementById('dashBadge').innerHTML='👤 '+escapeHtml(currentUser().name);const act=(d.activity||[]);document.getElementById('dashActivity').innerHTML=act.length?act.slice(0,8).map(a=>'<div class="activity-row"><span class="dot"></span><div><b>'+escapeHtml(a[1])+'</b><div class="small muted">'+escapeHtml(a[0])+'</div></div></div>').join(''):'<div class="empty">No activity yet.</div>'}
+function renderProfile(){const me=currentEmail(),u=currentUser(),books=catalog(),reqs=getRequests();document.getElementById('profileListings').textContent=books.filter(b=>b.ownerEmail===me).length;document.getElementById('profileCompleted').textContent=reqs.filter(r=>r.from===me&&r.status==='Completed').length}
+function getMessages(){return getJSON(MSG_KEY,[])}function saveMessages(v){setJSON(MSG_KEY,v)}
+function threadFor(other){return getMessages().find(m=>(m.a===currentEmail()&&m.b===other)||(m.a===other&&m.b===currentEmail()))}
+function ensureThread(other,bookTitle){let msgs=getMessages(),m=threadFor(other);if(!m){const u=getJSON(USER_KEY,[]).find(x=>x.email===other);m={id:'m'+Date.now(),a:currentEmail(),b:other,aName:currentUser().name,bName:u?u.name:other,book:bookTitle||'BookSwap conversation',msgs:[[ 'them','Hello! This is the BookSwap demo chat.']]};msgs.push(m);saveMessages(msgs)}return m}
+function renderThreads(){const msgs=getMessages().filter(m=>m.a===currentEmail()||m.b===currentEmail());let html=msgs.map(m=>{const me=currentEmail(),other=m.a===me?m.b:m.a,name=m.a===me?m.bName:m.aName;return '<div class="thread '+((window.activeMsgId===m.id)?'selected':'')+'" onclick="selectThread(\''+m.id+'\')"><b>'+escapeHtml(name)+'</b><div class="small muted">'+escapeHtml(m.book)+'</div><div class="small muted">'+escapeHtml(m.msgs.at(-1)?.[1]||'No messages')+'</div></div>'}).join('');document.getElementById('threads').innerHTML=html||'<div class="empty">No conversations yet.<br>Open a book and message its seller.</div>';if(msgs.length&&!window.activeMsgId)window.activeMsgId=msgs[0].id;if(window.activeMsgId)renderChat()}
+function selectThread(id){window.activeMsgId=id;renderThreads()}
+function renderChat(){const m=getMessages().find(x=>x.id===window.activeMsgId);if(!m){document.getElementById('chatHeader').innerHTML='<h3>Select a conversation</h3>';document.getElementById('bubbles').innerHTML='';return}const other=currentEmail()===m.a?m.bName:m.aName;document.getElementById('chatHeader').innerHTML='<h3 style="margin-top:0;color:var(--navy)">'+escapeHtml(other)+'</h3><div class="small muted">'+escapeHtml(m.book)+' • Private demo conversation</div>';document.getElementById('bubbles').innerHTML=m.msgs.map(x=>'<div class="bubble '+(x[0]==='me'?'me':'them')+'">'+escapeHtml(x[1])+'</div>').join('');scrollTo(0,document.body.scrollHeight)}
+function sendMessage(){const input=document.getElementById('chatText'),txt=input.value.trim();if(!txt||!window.activeMsgId)return;let msgs=getMessages(),m=msgs.find(x=>x.id===window.activeMsgId);m.msgs.push(['me',txt]);saveMessages(msgs);input.value='';renderChat();toast('Message sent');setTimeout(()=>{const arr=getMessages(),mm=arr.find(x=>x.id===window.activeMsgId);if(mm){mm.msgs.push(['them','Thanks! I will confirm the exchange details shortly.']);saveMessages(arr);renderChat()}},650)}
+function startChat(other,bookId){const b=catalog().find(x=>x.id===bookId);ensureThread(other,b?b.title:'BookSwap conversation');show('messages');renderThreads()}
+function openRequestChat(id){const r=getRequests().find(x=>x.id===id);if(!r)return;const other=currentEmail()===r.from?r.to:r.from;ensureThread(other,r.book);show('messages');renderThreads()}
+function openNotifications(){const d=getUserData(),reqs=getRequests(),me=currentEmail();document.getElementById('modal').innerHTML='<div class="modal-head"><h3>Notifications</h3><button class="close" onclick="closeModal()">×</button></div><div class="activity"><div class="activity-row"><span class="dot"></span><div><b>Welcome back, '+escapeHtml(currentUser().name)+'</b><div class="small muted">You are logged in to your private BookSwap workspace.</div></div></div><div class="activity-row"><span class="dot"></span><div><b>'+reqs.filter(r=>r.to===me&&r.status==='Pending').length+' pending incoming requests</b><div class="small muted">Open Requests Center to respond.</div></div></div><div class="activity-row"><span class="dot"></span><div><b>'+(d.favorites||[]).length+' saved books</b><div class="small muted">Your favourites belong only to this account on this browser.</div></div></div></div>';openModal()}
+function openSwitchAccount(){document.getElementById('modal').innerHTML='<div class="modal-head"><h3>Switch Demo Account</h3><button class="close" onclick="closeModal()">×</button></div><p class="muted">Switching accounts lets you demonstrate that private dashboard data is separated by user.</p><div class="cards" style="margin-top:8px"><button class="card" style="text-align:left;cursor:pointer" onclick="switchUser(\'sahil@bookswap.demo\')"><h3>👤 Sahil Meena</h3><div class="small muted">sahil@bookswap.demo</div></button><button class="card" style="text-align:left;cursor:pointer" onclick="switchUser(\'student@bookswap.demo\')"><h3>👤 Aarav Sharma</h3><div class="small muted">student@bookswap.demo</div></button></div>' ;openModal()}
+function switchUser(email){sessionStorage.setItem(CURRENT_KEY,email);window.activeMsgId=null;closeModal();refreshShell();show('dashboard');toast('Switched to '+(currentUser()?.name||email))}
+function openModal(){document.getElementById('modalBack').classList.add('open')}function closeModal(e){if(e&&e.target!==document.getElementById('modalBack'))return;document.getElementById('modalBack').classList.remove('open')}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove('show'),2300)}
+(async function init(){await seedUsers();if(currentEmail()&&currentUser()){startApp()}})();
+</script>
+</body>
+</html>
