@@ -76,7 +76,7 @@ footer{background:#0e2743;color:#d5e1eb;text-align:center;padding:30px;margin-to
         <div class="field"><label>Email</label><input id="loginEmail" type="email" required placeholder="you@college.edu"></div>
         <div class="field"><label>Password</label><input id="loginPass" type="password" required placeholder="Enter password"></div>
         <button class="btn navy" type="submit">Login to BookSwap →</button>
-        <div class="demo-note"><b>Demo accounts</b><br>Sahil Meena: <b>sahil@bookswap.demo</b> / <b>1234</b><br>Other student: <b>student@bookswap.demo</b> / <b>1234</b></div>
+        <div class="small muted" style="text-align:center">Use your registered college email and password to continue.</div>
       </form>
       <form id="registerForm" class="form hidden" onsubmit="register(event)">
         <div class="two">
@@ -109,7 +109,7 @@ footer{background:#0e2743;color:#d5e1eb;text-align:center;padding:30px;margin-to
   </div>
   <div class="head-right">
     <button class="icon" onclick="openNotifications()" title="Notifications">🔔</button>
-    <div class="user-chip"><div id="avatar" class="avatar">SM</div><div id="userName" class="user-name">Sahil</div></div>
+    <button class="user-chip" onclick="show('profile')" title="Open profile"><div id="avatar" class="avatar">SM</div><div id="userName" class="user-name">Sahil</div></button>
     <button class="icon" onclick="logout()" title="Logout">↪</button>
   </div>
 </header>
@@ -194,7 +194,7 @@ footer{background:#0e2743;color:#d5e1eb;text-align:center;padding:30px;margin-to
    <div style="display:flex;gap:8px;margin-top:13px;flex-wrap:wrap"><button class="btn primary" onclick="addListing()">Publish Listing</button><button class="btn outline" onclick="clearListingForm()">Clear</button></div>
    <div class="demo-note" style="margin-top:14px">In this frontend prototype, listing data is stored locally in the browser. A production version would send the form to backend APIs and a database.</div>
   </div>
-  <div class="panel"><h3>Your ownership model</h3><p class="muted">This listing will be tagged to the current logged-in user. Other demo accounts can see the public listing, while only the owner can edit or delete it.</p><div class="card" style="box-shadow:none;margin-top:13px;background:#f9fbfd"><b id="listOwnerName">Sahil Meena</b><div class="small muted" id="listOwnerDept">ECE • MNIT Jaipur</div><div style="margin-top:10px" class="tag green">✓ Student account</div></div></div>
+  <div class="panel"><h3>Your ownership model</h3><p class="muted">This listing will be tagged to the current logged-in user. Other demo accounts can see the public listing, while only the owner can edit or delete it.</p><div class="card" style="box-shadow:none;margin-top:13px;background:#f9fbfd"><b id="listOwnerName">Sahil Meena</b><div class="small muted" id="listOwnerDept">ECE • MNIT Jaipur</div><div class="small muted" id="listOwnerId" style="margin-top:3px"></div><div style="margin-top:10px" class="tag green">✓ Student account</div></div></div>
  </div>
  </div>
 </section>
@@ -226,7 +226,7 @@ footer{background:#0e2743;color:#d5e1eb;text-align:center;padding:30px;margin-to
   <div><div id="profileAvatar" class="profile-avatar">SM</div><div class="tag green" style="margin-top:10px">✓ Demo verified student</div></div>
   <div><h2 id="profileName" style="margin:0;color:var(--navy)"></h2><p id="profileDept" class="muted"></p>
    <div class="detail-grid">
-    <div class="detail-item"><b>Email</b><span id="profileEmail"></span></div>
+    <div class="detail-item"><b>Student ID</b><span id="profileStudentId"></span></div><div class="detail-item"><b>Email</b><span id="profileEmail"></span></div>
     <div class="detail-item"><b>Member since</b>2026</div>
     <div class="detail-item"><b>My listings</b><span id="profileListings"></span></div>
     <div class="detail-item"><b>Completed exchanges</b><span id="profileCompleted"></span></div>
@@ -274,8 +274,8 @@ async function hashPass(s){if(window.crypto&&crypto.subtle){const b=await crypto
 async function seedUsers(){
 let users=getJSON(USER_KEY,[]);
 if(users.length)return;
-users=[{name:'Sahil Meena',dept:'ECE • MNIT Jaipur',email:'sahil@bookswap.demo',pass:await hashPass('1234'),joined:'2026'},
-{name:'Aarav Sharma',dept:'ECE • MNIT Jaipur',email:'student@bookswap.demo',pass:await hashPass('1234'),joined:'2026'}];
+users=[{name:'Sahil Meena',studentId:'2023UEC1098',dept:'ECE • MNIT Jaipur',email:'sahil@bookswap.demo',pass:await hashPass('1234'),joined:'2026'},
+{name:'Aarav Sharma',studentId:'BS-DEMO-002',dept:'ECE • MNIT Jaipur',email:'student@bookswap.demo',pass:await hashPass('1234'),joined:'2026'}];
 setJSON(USER_KEY,users);
 }
 function authMode(mode){document.getElementById('loginForm').classList.toggle('hidden',mode!=='login');document.getElementById('registerForm').classList.toggle('hidden',mode!=='register');document.getElementById('tabLogin').classList.toggle('active',mode==='login');document.getElementById('tabRegister').classList.toggle('active',mode==='register');clearAuthError()}
@@ -284,7 +284,7 @@ async function login(ev){ev.preventDefault();clearAuthError();const email=docume
 async function register(ev){ev.preventDefault();clearAuthError();const name=document.getElementById('regName').value.trim(),dept=document.getElementById('regDept').value.trim(),email=document.getElementById('regEmail').value.trim().toLowerCase(),p1=document.getElementById('regPass').value,p2=document.getElementById('regPass2').value;if(p1!==p2){authError('Passwords do not match.');return}let users=getJSON(USER_KEY,[]);if(users.some(u=>u.email===email)){authError('An account with this email already exists.');return}users.push({name,dept,email,pass:await hashPass(p1),joined:'2026'});setJSON(USER_KEY,users);sessionStorage.setItem(CURRENT_KEY,email);startApp();toast('Student account created successfully')}
 function logout(){sessionStorage.removeItem(CURRENT_KEY);location.reload()}
 function startApp(){document.getElementById('authScreen').classList.add('hidden');document.getElementById('app').classList.remove('hidden');refreshShell();show('home')}
-function refreshShell(){const u=currentUser();if(!u)return;document.getElementById('avatar').textContent=initials(u.name);document.getElementById('userName').textContent=u.name.split(' ')[0];document.getElementById('ownerBadge').textContent=u.name;document.getElementById('listOwnerName').textContent=u.name;document.getElementById('listOwnerDept').textContent=u.dept;document.getElementById('profileAvatar').textContent=initials(u.name);document.getElementById('profileName').textContent=u.name;document.getElementById('profileDept').textContent=u.dept;document.getElementById('profileEmail').textContent=u.email}
+function refreshShell(){const u=currentUser();if(!u)return;document.getElementById('avatar').textContent=initials(u.name);document.getElementById('userName').textContent=u.name.split(' ')[0];document.getElementById('ownerBadge').textContent=u.name;document.getElementById('listOwnerName').textContent=u.name;document.getElementById('listOwnerDept').textContent=u.dept;document.getElementById('listOwnerId').textContent='Student ID: '+(u.studentId||'Not set');document.getElementById('profileAvatar').textContent=initials(u.name);document.getElementById('profileName').textContent=u.name;document.getElementById('profileStudentId').textContent=u.studentId||'Not set';document.getElementById('profileDept').textContent=u.dept;document.getElementById('profileEmail').textContent=u.email}
 function show(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));if(id==='books')renderBooks();if(id==='dashboard')renderDashboard();if(id==='requests')renderRequests();if(id==='messages')renderThreads();if(id==='profile')renderProfile();scrollTo({top:0,behavior:'smooth'})}
 function catalog(){return getJSON(CATALOG_KEY,seedCatalog)}function saveCatalog(v){setJSON(CATALOG_KEY,v)}
 function resetFilters(){['search','subject','sem','mode','condition'].forEach(id=>document.getElementById(id).value='');renderBooks()}
